@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hardcodet.Wpf.TaskbarNotification;
+using System.Collections.ObjectModel;
 
 namespace Vippen
 {
@@ -20,9 +22,11 @@ namespace Vippen
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
     }
 }
