@@ -10,6 +10,7 @@ namespace Vippen.Services
     public interface IVpnConnectorService
     {
         Task<bool> Connect(string vpnName);
+        Task<bool> Disconnect(string name);
     }
 
     public class VpnConnectorService : IVpnConnectorService
@@ -20,21 +21,32 @@ namespace Vippen.Services
 
         public async Task<bool> Connect(string vpnName)
         {
-            var rasDialer = new Process
+            return await Dialer(vpnName);
+        }
+
+        public async Task<bool> Disconnect(string vpnName)
+        {
+            return await Dialer(vpnName, "/DISCONNECT");
+        }
+
+        private async Task<bool> Dialer(string vpnName, string arguments = "")
+        {
+            var proc = new Process
             {
                 EnableRaisingEvents = true,
                 StartInfo =
                 {
                     FileName = "rasdial.exe",
-                    Arguments = vpnName,
+                    Arguments = $"{vpnName} {arguments}",
                     CreateNoWindow = true,
                     UseShellExecute = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 }
             };
-            var task = new Task<bool>(() => rasDialer.Start()); //TODO: Error handling
+            var task = new Task<bool>(() => proc.Start()); //TODO: Error handling
             task.Start();
             return await task;
         }
+
     }
 }

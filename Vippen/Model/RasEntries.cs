@@ -9,19 +9,20 @@ namespace Vippen.Model
     {
         public RasEntries(IRasParserService rasParser)
         {
-            Entries = new ObservableCollection<string>(rasParser.ParsePbk());
+            Networks = new ObservableCollection<Network>(
+                rasParser.ParsePbk().Select(n => new Network(n)));
         }
 
-        private ObservableCollection<string> _entries;
-        public ObservableCollection<string> Entries
+        private ObservableCollection<Network> _networks;
+        public ObservableCollection<Network> Networks
         {
-            get { return _entries; }
+            get { return _networks; }
             set
             {
-                if (_entries != null && _entries.SequenceEqual(value))
+                if (_networks != null && _networks.SequenceEqual(value))
                     return;
 
-                _entries = value;
+                _networks = value;
                 OnPropertyChanged("Entries");
             }
         }

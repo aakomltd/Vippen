@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\Network.cs" />
     <Compile Include="Model\RasEntries.cs" />
     <Compile Include="Services\RasParserService.cs" />
     <Compile Include="Services\VpnConnectorService.cs" />
@@ -129,6 +130,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\NotifyIcon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Off.png" />
+    <Resource Include="Images\On.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

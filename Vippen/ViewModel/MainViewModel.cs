@@ -2,13 +2,14 @@ using GalaSoft.MvvmLight;
 using Vippen.Model;
 using GalaSoft.MvvmLight.Command;
 using Vippen.Services;
-using GalaSoft.MvvmLight.Ioc;
+using System.Collections.ObjectModel;
 
 namespace Vippen.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        public RasEntries RasEntries { get; }
+        public ObservableCollection<Network> Networks { get; }
+        private RasEntries RasNetworks { get; }
         public RelayCommand<string> OpenVpnConnection { get; private set;}
         IVpnConnectorService _vpnConnector;
 
@@ -20,14 +21,30 @@ namespace Vippen.ViewModel
             else
             {
                 _vpnConnector = vpnConnectorService;
-                RasEntries = new RasEntries(rasParserService);
+                RasNetworks = new RasEntries(rasParserService);
+                Networks = RasNetworks.Networks;
                 OpenVpnConnection = new RelayCommand<string>(Connect);
             }
         }
         
-        public void Connect(string vpn)
+        public void Connect(string name)
         {
-            _vpnConnector.Connect(vpn);
+            foreach (Network net in Networks)
+                if (net.Name == name)
+                {
+                    if(net.Connected)
+                    {
+                        _vpnConnector.Disconnect(name);
+                        net.Connected = false;
+                        return;
+                    }
+                    else
+                    {
+                        _vpnConnector.Connect(name);
+                        net.Connected = true;
+                        return;
+                    }
+                }
         }
 
     }
